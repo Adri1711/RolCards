@@ -1,0 +1,252 @@
+announcement: ' &edestroyed &6'
+challengItem:
+  name: '&c&lChallenge'
+  lore:
+  - '&7Left click to join a random queue'
+  - '&7Right click to someone to challeng them'
+requestItem: '&2&lRequests'
+cardMenuItem: '&2&lCard Menu'
+infoItem:
+  name: '&6Enemy Info / Mobs Menu'
+  lore:
+  - '&7Right click to see the enemy info'
+  - '&7Left click to open the mobs menu'
+enemyHealthInfo: '&2Your enemy has '
+manaCost: '&1Mana Cost'
+noDrop: You cant drop items playing.
+alreadyExistChallenge: This challeng already exist wait until he accepts
+noEnoughMana: 'You dont have enough mana to use this (You have '
+noCommands: You cant do commands that are not from rolcards while you are playing.
+usingCard:
+  use: ' used '
+  target: ' on '
+alreadyUsedSkill: You have already used your skill
+entity:
+  death: ' died'
+  attack: ' attacked '
+  alreadyattacked: This mob has already attacked this turn
+  wait: Wait your turn
+scoreboard:
+  wins: 'Wins:'
+  loses: 'Loses:'
+  money: 'Money:'
+  turnof: 'Turn of:'
+match:
+  winelo: '&2You have won '
+  winprize: '&2You won '
+  winmatch: '&2 won the game'
+  lose: '&4You have lost '
+  deathmatch: DEATHMATCH!
+  foundwait: '&2You are now in a match, wait your opponent to start'
+  foundbegin: '&2You found an opponent, lets start!'
+player:
+  turnof: Turn of
+  handfull: Your hand is full, you cant draw a card
+  deckfull: You already have 20 cards.
+  nocards: You dont have more cards to draw
+  enemynocards: The enemy dont have more cards
+matchRequest:
+  nomatch: '&4All the matches are occupied, wait until one ends'
+  nocards: '&4Both players need to have 20 cards'
+  noclass: '&4Both players must have a class'
+  playeronmatch: '&4The other player is in a match'
+  received: '&2Challeng received from '
+  sent: "\xa72Challeng sent to "
+card:
+  hunter:
+    skill:
+      name: '&2&lHunter Skill'
+      explanation: '&7Win an arrow'
+    poisongas:
+      name: '&2&lPoison Gas'
+      explanation: '&7The enemy got poisoned for 4 seconds'
+    getacopy:
+      name: '&2&lGet a Copy'
+      explanation: '&7Get a copy of a random card of the enemy'
+    tothehead:
+      name: '&2&lTo the Head'
+      explanation: '&7Deals 1 damage to enemy'
+    instantpoison:
+      name: '&2&lInstant Poison'
+      explanation: '&7Poison your enemy during next 2 seconds'
+    divinebow:
+      name: '&2&lDivine Bow'
+      explanation: '&7Get a bow with Power I'
+    legendarybow:
+      name: '&2&lLegendary Bow'
+      explanation: '&7Get a bow with Power III'
+    mortaltrap:
+      name: '&2&lMortal Trap'
+      explanation: '&7Make a trap that deals 4 damage to the enemy'
+    firstaid:
+      name: '&2&lFirst Aid'
+      explanation: '&7Heal yourself 1'
+    finishhim:
+      name: '&2&lFinish Him'
+      explanation: '&7Deals the enemy 6 damage'
+    lealcompanion:
+      name: '&2&lLeal Companion'
+      explanation: '&7Invokes a companion with 4 health and 4 damage'
+  mage:
+    skill:
+      name: '&1&lMage Skill'
+      explanation: '&7Heal yourself 0.5'
+    burn:
+      name: '&1&lBurn'
+      explanation: '&7Burn your enemy for two seconds'
+    arcaneintellect:
+      name: '&1&lArcane Intellect'
+      explanation: '&7Draw two cards'
+    fearofheights:
+      name: '&1&lFear of Heights'
+      explanation1: '&7Your enemy will have a fall that'
+      explanation2: '&7deals 3 damage'
+    divinehealer:
+      name: '&1&lDivine Healer'
+      explanation: '&7Heal yourself 3'
+    nuclearbomb:
+      name: '&1&lNuclear Bomb'
+      explanation1: '&7Make a explosion that deals your'
+      explanation2: '&7enemy 2 damage and poison for two seconds'
+    turningthetables:
+      name: '&1&lTurning the Tables'
+      explanation1: '&7Deals your enemy 1 damage and'
+      explanation2: '&7heal yourself 1'
+    newlife:
+      name: '&1&lNew Life'
+      explanation: '&7Totally heals you and your enemy'
+    manasupply:
+      name: '&1&lMana Supply'
+      explanation: '&7You win 1 mana this turn'
+    lifechange:
+      name: '&1&lLife Change'
+      explanation: '&7Change your health with the enemy'
+    witchcat:
+      name: '&1&lWitch Cat'
+      explanation: '&7Invokes a cat with 2 damage and 3 health'
+  warrior:
+    skill:
+      name: '&c&lWarrior Skill'
+      explanation: '&7Deals 0.5 damage to the enemy'
+    brutalhit:
+      name: '&c&lBrutal Hit'
+      explanation: '&7Deals 3 damage to the enemy'
+    berserker:
+      name: '&c&lBerserker'
+      explanation: '&7Deals randomly 2-4 damage to the enemy'
+      effect:
+        damage: damage
+    insanity:
+      name: '&c&lInsanity'
+      explanation: '&7Deals 2 damage randomly to the enemy or yourself'
+      effect:
+        damageyourself: You damaged yourself
+        damagehisself: ' damaged hisself'
+    ironball:
+      name: '&c&lIron Ball'
+      explanation1: '&7Gives you a iron ball, if you hit'
+      explanation2: '&7the enemy with it, it deals 3 damage'
+    disarm:
+      name: '&c&lDisarm'
+      explanation: '&7Break the weapon of your enemy'
+    snatchaway:
+      name: '&c&lSnatch Away'
+      explanation: '&7Steal the weapon of your enemy'
+    lasttry:
+      name: '&c&lLast Try'
+      explanation1: '&7If you are under 2 hearts you will deal'
+      explanation2: '&7your enemy 5 damage,if you are not you deal 2'
+    beast:
+      name: '&c&lBeast'
+      explanation: '&7Invokes a beast with 4 damage and 2 health'
+    slime:
+      name: '&c&lSlime'
+      explanation: '&7Invokes a little slime with 1 damage and 1 health'
+  normal:
+    flame:
+      name: '&f&lFlame'
+      explanation: '&7Burn your enemy for one second'
+    woodweapon:
+      name: '&f&lWood Weapon'
+      explanation: '&7Win a wood sword'
+    greatweapon:
+      name: '&f&lGreat Weapon'
+      explanation: '&7Win an iron sword'
+    insectbite:
+      name: '&f&lInsect Bite'
+      explanation: '&7Deals 0.5 damage to the enemy'
+    tigerbite:
+      name: '&f&lTiger Bite'
+      explanation: '&7Deals 1 damage to the enemy'
+    bearscratch:
+      name: '&f&lBear Scratch'
+      explanation: '&7Deals 1.5 damage to the enemy'
+    elephantstomp:
+      name: '&f&lElephant Stomp'
+      explanation: '&7Deals 3 damage to the enemy'
+    manaset:
+      name: '&f&lMana Set'
+      explanation: '&7Set your mana to 5 for this turn'
+    minorhealing:
+      name: '&f&lMinor Healing'
+      explanation: '&7Heals yourself 1'
+    majorhealing:
+      name: '&f&lMajor Healing'
+      explanation: '&7Heals yourself 2'
+    equality:
+      name: '&f&lEquality'
+      explanation: '&7Get the same HP as your opponent'
+    shieldbearer:
+      name: '&f&lShield Bearer'
+      explanation1: '&7Gives you a leather chestplate'
+      explanation2: '&7It can help you on physical attacks'
+    incantation:
+      name: '&f&lIncantation'
+      explanation: '&7Deals your enemy 1 damage and heals you 0.5'
+    takearest:
+      name: '&f&lTake a Rest'
+      explanation: '&7Heals yourself 3 and ends your turn'
+    presentforyou:
+      name: '&f&lPresent for you'
+      explanation: '&7Throw a bomb that deals 3.5 damage to the enemy'
+    vampire:
+      name: '&f&lVampire'
+      explanation: '&7Invokes a vampire with 3 damage and 3 health'
+    exiledzombie:
+      name: '&f&lExiled Zombie'
+      explanation: '&7Invokes a zombie with 1 damage and 2 health'
+monster:
+  vampire: '&f&lVampire'
+  exiledZombie: '&f&lExiled Zombie'
+  beast: '&c&lBeast'
+  lealCompanion: '&2&lLeal Companion'
+  slime: '&c&lSlime'
+  witchCat: '&1&lWitch Cat'
+  alreadyfive: ' you already have 5 monsters '
+gui:
+  class:
+    warrior: Warrior
+    mage: Mage
+    hunter: Hunter
+  cardmenu:
+    cardshop: Card Shop
+    cleardeck: Clear the deck
+    return: Return to class selection
+    classcards: Choose class cards
+    normalcards: Choose normal cards
+    deckdeleted: Deck deleted
+    returned: Returned to normal class
+  request:
+    paidfee: 'You have paid a fee of '
+    nomoneyfee: One of the players cant pay the fee
+    bothplaying: Both must be playing RolCards
+    offlineplayer: This player is not online
+  card:
+    alreadytwocopies: You already have two copies of this card in your deck
+    nocardindeck: You dont have this card in your deck
+    buy: 'You have bought '
+    nomoney: You dont have enough money
+  item:
+    prepage: '&4Previous Page'
+    postpage: '&2Next Page'
+guiLottery: '&2Lottery'

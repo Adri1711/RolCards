@@ -1,0 +1,76 @@
+name: RolCards
+main: com.adri1711.rolcards.RolCards
+version: 4.6
+softdepend: [MVdWPlaceholderAPI]
+loadbefore: [FeatherBoard]
+depend: [Vault,Lib1711]
+commands:
+   rolcards:
+      description: Comando para ver comandos
+      usage: /rolcards
+   rolcards test:
+      description: Comando para testear
+      usage: /rolcards test
+   rolcards join:
+      description: Comando para unirte a partida random
+      usage: /rolcards join
+   rolcards elo:
+      description: Comando para ver tu elo
+      usage: /rolcards elo
+   rolcards stats:
+      description: Comando para ver tus stats
+      usage: /rolcards stats
+   rolcards play:
+      description: Comando para jugar
+      usage: /rolcards play
+   rolcards leave:
+      description: Comando para dejar de jugar
+      usage: /rolcards leave
+   rolcards top:
+      description: Comando para ver el top 10
+      usage: /rolcards top
+   rolcards info:
+      description: Comando para ver la vida del enemigo
+      usage: /rolcards info
+   rolcards reload:
+      description: Comando para recargar el plugin
+      usage: /rolcards reload
+   rolcards elo [player]:
+      description: Comando para ver el elo de un jugador
+      usage: /rolcards elo [player]
+   rolcards stats [player]:
+      description: Comando para ver los stats de un jugador
+      usage: /rolcards stats [player]
+   rolcards elo give [player] [amount]:
+      description: Comando para dar elo
+      usage: /rolcards elo give [player] [amount]
+   rolcards elo set [player] [amount]:
+      description: Comando para poner elo
+      usage: /rolcards elo set [player] [amount]
+   rolcards card create:
+      description: Comando para crear una carta
+      usage: /rolcards card create
+   rolcards arena create [number]:
+      description: Comando para crear una arena
+      usage: /rolcards arena create [number]
+   rolcards arena setspawn1 [number]:
+      description: Comando para poner el primer spawn de la arena
+      usage: /rolcards arena setspawn1 [number]
+   rolcards arena setspawn2 [number]:
+      description: Comando para poner el segundo spawn de la arena
+      usage: /rolcards arena setspawn2 [number]
+   rolcards spawn set:
+      description: Comando para poner spawn
+      usage: /rolcards spawn set
+   rolcards arena setdeathmatch1 [number]:
+      description: Comando para poner el primer spawn de la deathmatch de la arena
+      usage: /rolcards arena setdeathmatch1 [number]
+   rolcards arena setdeathmatch2 [number]:
+      description: Comando para poner el primer spawn de la deathmatch de la arena
+      usage: /rolcards arena setdeathmatch2 [number] 
+   rolcards arena setmobspawn1 [ID] [number]:
+      description: Comando para poner mob spawn [number] del player 1 de la arena [ID]
+      usage: /rolcards arena setmobspawn1 [ID] [number]
+   rolcards arena setmobspawn2 [ID] [number]:
+      description: Comando para poner mob spawn [number] del player 2 de la arena [ID]
+      usage: /rolcards arena setmobspawn2 [ID] [number]

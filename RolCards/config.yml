@@ -1,0 +1,65 @@
+#################################################################
+#							MySQL								#
+#						Configuration							#
+#################################################################
+mysql:
+  host: ''
+  port: ''
+  database: ''
+  user: ''
+  password: ''
+#################################################################
+#							Spawn								#
+#						Configuration							#
+#################################################################
+spawn:
+  ==: org.bukkit.Location
+  yaw: 0.0
+  pitch: 0.0
+  z: 0.0
+  y: 60.0
+  world: world
+  x: 0.0
+#################################################################
+#						  Gameplay								#
+#						Configuration							#
+#################################################################
+#Deck size
+deckSize: 20
+#Time of the turn of each player
+turnTime: 25
+#Reward amount
+prizeAmount: 10
+rewardCommand: 'eco give %player% 10'
+#Set language to 'es' if you want a spanish traduction, if you set it to 'en'
+#you can change the messages on the 'messages.yml'
+language: en
+#Set it to true if you have a MySQL configurated, set it to false to use file storage
+enableMySQL: false
+#If you set it to true, rolcards will be activated for all players when they join the server
+#set it to false if you want that the players has to do /rolcards play to start
+directJoin: false
+#Featherboard Hook
+featherBoardEnabled: false
+#Scoreboard config
+scoreboardEnabled: true
+scoreboardName: RolCards
+#Fee that you must pay when you join a match.
+joinMatchFee: 0
+#The cost of the lottery. The lottery gives you a random card.
+lotMoneyCost: 4500.0
+#Enable or disable the custom resourcepack of RolCards
+resourcePackEnabled: true
+#Thats the resource link that will be downloaded when you do /rolcards leave
+resourceNormal: 'http://www.faithful32x32.com/dl/faithful32pack.zip'
+#################################################################
+#						    Arena								#
+#						Configuration							#
+#################################################################
+arenas: []
+
+#################################################################
+#						    Card								#
+#						  Creation								#
+#################################################################
+createdCards: []

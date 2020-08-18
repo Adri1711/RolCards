@@ -35,8 +35,11 @@ public class Join implements Listener {
 		}
 		if (this.plugin.isDirectJoin()) {
 			j.setPlaying(true);
-			p.setResourcePack(
-					"https://www.dropbox.com/s/rdl3kik4sw2o2zw/RolCards%2032x32%20RP%20%5BUPDATED%5D.zip?dl=1");
+			if (plugin.getsVersion().contains("v1_15")) {
+				p.setResourcePack("https://www.dropbox.com/s/gn40ymxroq2t8by/RolCards1.15.zip?dl=1");
+			} else {
+				p.setResourcePack("https://www.dropbox.com/s/atehu8letooruvh/Rolcards.zip?dl=1");
+			}
 			Utils.setInventarioDefault(p, this.plugin);
 			Utils.updateScoreboard(p, j, null, this.plugin);
 		}

@@ -38,13 +38,13 @@ public class NormalCards
       this.greatWeapon = new Card(CardClass.NORMAL, "§f§lGran Arma", Integer.valueOf(0), Integer.valueOf(4), 
           "rolcards.class.normal", "§7Consigues una espada de hierro");
       this.insectBite = new Card(CardClass.NORMAL, "§f§lPicadura de Insecto", Integer.valueOf(0), Integer.valueOf(1), 
-          "rolcards.class.normal", "§7Ejerce 0.5 de daÃ±o al enemigo");
+          "rolcards.class.normal", "§7Ejerce 0.5 de daño al enemigo");
       this.tigerBite = new Card(CardClass.NORMAL, "§f§lMordedura de Tigre", Integer.valueOf(0), Integer.valueOf(3), 
-          "rolcards.class.normal", "§7Ejerce 1 de daÃ±o al enemigo");
-      this.bearScratch = new Card(CardClass.NORMAL, "§f§lAraÃ±azo de Oso", Integer.valueOf(0), Integer.valueOf(4), 
-          "rolcards.class.normal", "§7Ejerce 1.5 de daÃ±o al enemigo");
+          "rolcards.class.normal", "§7Ejerce 1 de daño al enemigo");
+      this.bearScratch = new Card(CardClass.NORMAL, "§f§lArañazo de Oso", Integer.valueOf(0), Integer.valueOf(4), 
+          "rolcards.class.normal", "§7Ejerce 1.5 de daño al enemigo");
       this.elephantStomp = new Card(CardClass.NORMAL, "§f§lPisoton de Elefante", 
-          Integer.valueOf(0), Integer.valueOf(7), "rolcards.class.normal", "§7Ejerce 3 de daÃ±o al enemigo");
+          Integer.valueOf(0), Integer.valueOf(7), "rolcards.class.normal", "§7Ejerce 3 de daño al enemigo");
       this.manaSet = new Card(CardClass.NORMAL, "§f§lSet de Mana", Integer.valueOf(0), Integer.valueOf(4), 
           "rolcards.class.normal", "§7Pone tu mana a 5 por este turno");
       this.minorHealing = new Card(CardClass.NORMAL, "§f§lPoca Cura", Integer.valueOf(0), 
@@ -58,13 +58,13 @@ public class NormalCards
           "§7Te ayudara en ataques fisicos");
       this.incantation = new Card(CardClass.NORMAL, "§f§lBrujeria", Integer.valueOf(0), Integer.valueOf(4), 
           "rolcards.class.normal", 
-          "§7DaÃ±a a tu enemigo 1 y te curas 0.5");
+          "§7Daña a tu enemigo 1 y te curas 0.5");
       this.takeARest = new Card(CardClass.NORMAL, "§f§lDescanso", Integer.valueOf(0), Integer.valueOf(5), 
           "rolcards.class.normal", 
           "§7Te curas 3 y acaba tu turno");
       this.presentForYou = new Card(CardClass.NORMAL, "§f§lRegalito para ti", 
           Integer.valueOf(0), Integer.valueOf(9), "rolcards.class.normal", 
-          "§7Lanza una bomba al enemigo que daÃ±a 3.5");
+          "§7Lanza una bomba al enemigo que daña 3.5");
       this.vampire = new Card(CardClass.NORMAL, "§f§lVampiro", 
           Integer.valueOf(0), Integer.valueOf(4), "rolcards.class.normal", 
           "§7Invoca un vampiro de 3 de ataque y 3 de salud");

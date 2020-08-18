@@ -1,26 +1,8 @@
 package com.adri1711.rolcards.utils;
 
-import com.adri1711.api.API1711v1_8_R3;
-import com.adri1711.auxiliar1_8_R3.ChatPosition;
-import com.adri1711.auxiliar1_8_R3.ClickAction;
-import com.adri1711.auxiliar1_8_R3.Text;
-import com.adri1711.auxiliar1_8_R3.Util;
-import com.adri1711.rolcards.RolCards;
-import com.adri1711.rolcards.arenas.ArenaRC;
-import com.adri1711.rolcards.cards.Card;
-import com.adri1711.rolcards.cards.CardClass;
-import com.adri1711.rolcards.cards.CardEffect;
-import com.adri1711.rolcards.cards.CreatedCard;
-import com.adri1711.rolcards.jugador.Jugador;
-import com.adri1711.rolcards.language.LanguageMessages;
-import com.adri1711.rolcards.match.Partida;
-import com.adri1711.rolcards.monsters.Monster;
-import com.adri1711.rolcards.peticiones.Peticion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -28,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,6 +18,20 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+
+import com.adri1711.rolcards.RolCards;
+import com.adri1711.rolcards.arenas.ArenaRC;
+import com.adri1711.rolcards.cards.Card;
+import com.adri1711.rolcards.cards.CardClass;
+import com.adri1711.rolcards.cards.CreatedCard;
+import com.adri1711.rolcards.jugador.Jugador;
+import com.adri1711.rolcards.language.LanguageMessages;
+import com.adri1711.rolcards.match.Partida;
+import com.adri1711.rolcards.monsters.Monster;
+import com.adri1711.rolcards.peticiones.Peticion;
+import com.adri1711.util.enums.AMaterials;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class Utils {
 	public static Jugador buscaJugador(Player p, RolCards plugin) {
@@ -233,7 +230,7 @@ public class Utils {
 
 	public static ItemStack transformaCarta(Card c, RolCards plugin) {
 		LanguageMessages message = plugin.getMessages();
-		ItemStack carta = new ItemStack(Material.PAPER);
+		ItemStack carta = new ItemStack(plugin.getApi().getMaterial(AMaterials.PAPER));
 		ItemMeta cartaMeta = carta.getItemMeta();
 		cartaMeta.setDisplayName(String.valueOf(c.getCardName().replaceAll("&", "§")) + " §1" + message.getManaCostMsg()
 				+ ": " + c.getCardCost());
@@ -276,7 +273,7 @@ public class Utils {
 
 	public static ItemStack transformaCartaGUI(Card c, RolCards plugin) {
 		LanguageMessages message = plugin.getMessages();
-		ItemStack carta = new ItemStack(Material.BOOK);
+		ItemStack carta = new ItemStack(plugin.getApi().getMaterial(AMaterials.BOOK));
 		ItemMeta cartaMeta = carta.getItemMeta();
 		cartaMeta.setDisplayName(c.getCardName().replaceAll("&", "§"));
 		List<String> lore = new ArrayList<>();
@@ -318,7 +315,7 @@ public class Utils {
 
 	public static ItemStack transformaCartaShopGUI(Card c, RolCards plugin) {
 		LanguageMessages message = plugin.getMessages();
-		ItemStack carta = new ItemStack(Material.BOOK);
+		ItemStack carta = new ItemStack(plugin.getApi().getMaterial(AMaterials.BOOK));
 		ItemMeta cartaMeta = carta.getItemMeta();
 		cartaMeta.setDisplayName(c.getCardName().replaceAll("&", "§"));
 		List<String> lore = new ArrayList<>();
@@ -532,7 +529,7 @@ public class Utils {
 
 	public static void giveClassSkill(Jugador jugador1, RolCards plugin) {
 		LanguageMessages message = plugin.getMessages();
-		ItemStack info = new ItemStack(Material.STICK);
+		ItemStack info = new ItemStack(plugin.getApi().getMaterial(AMaterials.STICK));
 		ItemMeta infoMeta = info.getItemMeta();
 		List<String> loreaux = new ArrayList<>();
 		if (plugin.getLanguage().equalsIgnoreCase("es")) {
@@ -683,8 +680,16 @@ public class Utils {
 				if (plugin.getLanguage().equalsIgnoreCase("es")) {
 					dos = obj.getScore(String.valueOf(ChatColor.WHITE.toString()) + "Dinero:");
 				}
-				Score uno = obj.getScore(String.valueOf(ChatColor.GREEN.toString())
+				Score uno =null;
+				
+					if(RolCards.getEconomy()!=null && player!=null){
+						uno=obj.getScore(String.valueOf(ChatColor.GREEN.toString())
 						+ RolCards.getEconomy().getBalance((OfflinePlayer) player));
+					}else{
+						uno=obj.getScore(String.valueOf(ChatColor.GREEN.toString())
+								+ "0");
+					}
+					
 				if (j.getPartida() != null) {
 					Score ocho = obj.getScore(String.valueOf(ChatColor.WHITE.toString()) + "Mana:");
 					Score siete = obj.getScore(String.valueOf(ChatColor.GREEN.toString()) + j.getMana());
@@ -729,7 +734,7 @@ public class Utils {
 			if (!j.isUsedSkill()) {
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				j.setUsedSkill(true);
-				Skills.makeMageSkillEffect(j, enemy);
+				Skills.makeMageSkillEffect(plugin,j, enemy);
 				enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
 
 			} else if (plugin.getLanguage().equalsIgnoreCase("es")) {
@@ -747,7 +752,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeArcaneIntellectEffect(j, enemy);
+			Skills.makeArcaneIntellectEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -756,7 +761,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeBurnEffect(j, enemy);
+			Skills.makeBurnEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -766,7 +771,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeDivineHealerEffect(j, enemy);
+			Skills.makeDivineHealerEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -775,7 +780,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeFearOfHeightsEffect(j, enemy);
+			Skills.makeFearOfHeightsEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -785,7 +790,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeLifeChangeEffect(j, enemy);
+			Skills.makeLifeChangeEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -795,7 +800,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeManaSupplyEffect(j, enemy);
+			Skills.makeManaSupplyEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -805,7 +810,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeNewLifeEffect(j, enemy);
+			Skills.makeNewLifeEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -815,7 +820,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeNuclearBombEffect(j, enemy);
+			Skills.makeNuclearBombEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -825,7 +830,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeTurningTheTablesEffect(j, enemy);
+			Skills.makeTurningTheTablesEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled()) {
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			}
@@ -836,7 +841,7 @@ public class Utils {
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				j.setUsedSkill(true);
 				enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-				Skills.makeHunterSkillEffect(j, enemy);
+				Skills.makeHunterSkillEffect(plugin,j, enemy);
 			} else if (plugin.getLanguage().equalsIgnoreCase("es")) {
 				p.sendMessage(ChatColor.RED + "Ya usaste tu habilidad de clase");
 			} else {
@@ -852,7 +857,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeDivineBowEffect(j, enemy);
+			Skills.makeDivineBowEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -862,7 +867,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeFinishHimEffect(j, enemy);
+			Skills.makeFinishHimEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -872,7 +877,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeFirstAidEffect(j, enemy);
+			Skills.makeFirstAidEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -892,7 +897,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeInstantPoisonEffect(j, enemy);
+			Skills.makeInstantPoisonEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -902,7 +907,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeLegendaryBowEffect(j, enemy);
+			Skills.makeLegendaryBowEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -912,7 +917,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeMortalTrapEffect(j, enemy);
+			Skills.makeMortalTrapEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -922,7 +927,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makePoisonGasEffect(j, enemy);
+			Skills.makePoisonGasEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled())
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -932,7 +937,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeToTheHeadEffect(j, enemy);
+			Skills.makeToTheHeadEffect(plugin,j, enemy);
 			if (plugin.isScoreboardEnabled()) {
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			}
@@ -943,7 +948,7 @@ public class Utils {
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				j.setUsedSkill(true);
 				enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-				Skills.makeWarriorSkillEffect(j, enemy);
+				Skills.makeWarriorSkillEffect(plugin,j, enemy);
 			} else if (plugin.getLanguage().equalsIgnoreCase("es")) {
 				p.sendMessage(ChatColor.RED + "Ya usaste tu habilidad de clase");
 			} else {
@@ -969,7 +974,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeBrutalHitEffect(j, enemy);
+			Skills.makeBrutalHitEffect(plugin,j, enemy);
 
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
@@ -988,7 +993,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeIronBallEffect(j, enemy);
+			Skills.makeIronBallEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -997,7 +1002,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeDisarmEffect(j, enemy);
+			Skills.makeDisarmEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1006,7 +1011,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeSnatchAwayEffect(j, enemy);
+			Skills.makeSnatchAwayEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1015,7 +1020,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeLastTryEffect(j, enemy);
+			Skills.makeLastTryEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1024,7 +1029,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeBearScratchEffect(j, enemy);
+			Skills.makeBearScratchEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1033,7 +1038,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeElephantStompEffect(j, enemy);
+			Skills.makeElephantStompEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1042,7 +1047,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeEqualityEffect(j, enemy);
+			Skills.makeEqualityEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1051,7 +1056,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeFlameEffect(j, enemy);
+			Skills.makeFlameEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1060,7 +1065,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeGreatWeaponEffect(j, enemy);
+			Skills.makeGreatWeaponEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1069,7 +1074,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeIncantationEffect(j, enemy);
+			Skills.makeIncantationEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1078,7 +1083,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeInsectBiteEffect(j, enemy);
+			Skills.makeInsectBiteEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1087,7 +1092,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeMajorHealingEffect(j, enemy);
+			Skills.makeMajorHealingEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1096,7 +1101,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeManaSetEffect(j, enemy);
+			Skills.makeManaSetEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1105,7 +1110,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeMinorHealingEffect(j, enemy);
+			Skills.makeMinorHealingEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1114,7 +1119,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makePresentForYouEffect(j, enemy);
+			Skills.makePresentForYouEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1123,7 +1128,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeShieldBearerEffect(j, enemy);
+			Skills.makeShieldBearerEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1141,7 +1146,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeTigerBiteEffect(j, enemy);
+			Skills.makeTigerBiteEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1150,7 +1155,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-			Skills.makeWoodWeaponEffect(j, enemy);
+			Skills.makeWoodWeaponEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1162,7 +1167,7 @@ public class Utils {
 				p.updateInventory();
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-				Skills.makeDamageEffect(j, enemy, cc);
+				Skills.makeDamageEffect(plugin,j, enemy, cc);
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 				break;
 			case HEAL:
@@ -1170,7 +1175,7 @@ public class Utils {
 				p.updateInventory();
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				enviaMensajes(plugin, c, p, enemy, nombreCarta, message);
-				Skills.makeHealEffect(j, enemy, cc);
+				Skills.makeHealEffect(plugin,j, enemy, cc);
 				updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 				break;
 			}
@@ -1226,7 +1231,7 @@ public class Utils {
 			if (!j.isUsedSkill()) {
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				j.setUsedSkill(true);
-				Skills.makeMageSkillEffect(j, enemy, mon);
+				Skills.makeMageSkillEffect(plugin,j, enemy, mon);
 				enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
 
 			} else if (plugin.getLanguage().equalsIgnoreCase("es")) {
@@ -1243,7 +1248,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeArcaneIntellectEffect(j, enemy);
+			Skills.makeArcaneIntellectEffect(plugin,j, enemy);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1252,7 +1257,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeBurnEffect(j, enemy, mon);
+			Skills.makeBurnEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1261,7 +1266,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeDivineHealerEffect(j, enemy, mon);
+			Skills.makeDivineHealerEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1279,7 +1284,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeLifeChangeEffect(j, enemy, mon);
+			Skills.makeLifeChangeEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1288,7 +1293,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeManaSupplyEffect(j, enemy, mon);
+			Skills.makeManaSupplyEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1297,7 +1302,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeNewLifeEffect(j, enemy, mon);
+			Skills.makeNewLifeEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1324,7 +1329,7 @@ public class Utils {
 				j.setMana(j.getMana() - c.getCardCost().intValue());
 				j.setUsedSkill(true);
 				enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-				Skills.makeHunterSkillEffect(j, enemy);
+				Skills.makeHunterSkillEffect(plugin,j, enemy);
 			} else if (plugin.getLanguage().equalsIgnoreCase("es")) {
 				p.sendMessage(ChatColor.RED + "Ya usaste tu habilidad de clase");
 			} else {
@@ -1339,7 +1344,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeDivineBowEffect(j, enemy, mon);
+			Skills.makeDivineBowEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1357,7 +1362,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeFirstAidEffect(j, enemy, mon);
+			Skills.makeFirstAidEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1375,7 +1380,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeInstantPoisonEffect(j, enemy, mon);
+			Skills.makeInstantPoisonEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1384,7 +1389,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeLegendaryBowEffect(j, enemy, mon);
+			Skills.makeLegendaryBowEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1402,7 +1407,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makePoisonGasEffect(j, enemy, mon);
+			Skills.makePoisonGasEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1462,7 +1467,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeIronBallEffect(j, enemy, mon);
+			Skills.makeIronBallEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1471,7 +1476,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeDisarmEffect(j, enemy, mon);
+			Skills.makeDisarmEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1480,7 +1485,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeSnatchAwayEffect(j, enemy, mon);
+			Skills.makeSnatchAwayEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1516,7 +1521,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeEqualityEffect(j, enemy, mon);
+			Skills.makeEqualityEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1525,7 +1530,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeFlameEffect(j, enemy, mon);
+			Skills.makeFlameEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1534,7 +1539,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeGreatWeaponEffect(j, enemy, mon);
+			Skills.makeGreatWeaponEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1561,7 +1566,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeMajorHealingEffect(j, enemy, mon);
+			Skills.makeMajorHealingEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1570,7 +1575,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeManaSetEffect(j, enemy, mon);
+			Skills.makeManaSetEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1579,7 +1584,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeMinorHealingEffect(j, enemy, mon);
+			Skills.makeMinorHealingEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1597,7 +1602,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeShieldBearerEffect(j, enemy, mon);
+			Skills.makeShieldBearerEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1624,7 +1629,7 @@ public class Utils {
 			p.updateInventory();
 			j.setMana(j.getMana() - c.getCardCost().intValue());
 			enviaMensajes2(plugin, p, enemy, mon, nombreCarta, c, message);
-			Skills.makeWoodWeaponEffect(j, enemy, mon);
+			Skills.makeWoodWeaponEffect(plugin,j, enemy, mon);
 			updateScoreboard(j.getP(), j, j.getP().getName(), plugin);
 			return;
 		}
@@ -1676,10 +1681,9 @@ public class Utils {
 			descripcion = new String[] { c.getCardDescriptionLine1() };
 		}
 		if (plugin.getLanguage().equalsIgnoreCase("es")) {
-				Utils.mandaDescMonster(p, enemy, mon, nombreCarta, descripcion, plugin);
-			
+			Utils.mandaDescMonster(p, enemy, mon, nombreCarta, descripcion, plugin);
 
-		} else  {
+		} else {
 			Utils.mandaDescMonster2(p, enemy, mon, nombreCarta, descripcion, message, plugin);
 		}
 	}
@@ -1739,12 +1743,31 @@ public class Utils {
 				break;
 			}
 		}
+		if (sound == null) {
+			sound = Sound.values()[0];
+		}
 		return sound;
 	}
 
 	public static Effect buscaEffect(String s, String s2) {
 		Effect sound = null;
 		for (Effect sou : Effect.values()) {
+			if (sou.toString().contains(s) && sou.toString().contains(s2)) {
+				sound = sou;
+				break;
+			}
+		}
+		if (sound == null) {
+			sound = Effect.values()[0];
+		}
+		return sound;
+	}
+
+	
+
+	public static EntityType buscaEntityType(String s, String s2) {
+		EntityType sound = null;
+		for (EntityType sou : EntityType.values()) {
 			if (sou.toString().contains(s) && sou.toString().contains(s2)) {
 				sound = sou;
 				break;
@@ -1778,8 +1801,9 @@ public class Utils {
 
 		plugin.getApi().send((CommandSender) p, ChatColor.GREEN + p.getName() + message.getUsingCardMsg() + " ",
 				nombreCarta, Arrays.asList(descripcion), null, "");
-		plugin.getApi().send((CommandSender) enemy.getP(), ChatColor.GREEN + p.getName() + message.getUsingCardMsg() + " ",
-				nombreCarta, Arrays.asList(descripcion), null, "");
+		plugin.getApi().send((CommandSender) enemy.getP(),
+				ChatColor.GREEN + p.getName() + message.getUsingCardMsg() + " ", nombreCarta,
+				Arrays.asList(descripcion), null, "");
 	}
 
 	public static void usaTitle(Player p, String title, String subtitle, RolCards plugin) {

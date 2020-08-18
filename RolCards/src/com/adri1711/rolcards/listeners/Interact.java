@@ -24,6 +24,7 @@ import com.adri1711.rolcards.jugador.Jugador;
 import com.adri1711.rolcards.language.LanguageMessages;
 import com.adri1711.rolcards.utils.Skills;
 import com.adri1711.rolcards.utils.Utils;
+import com.adri1711.util.enums.AMaterials;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -57,7 +58,8 @@ public class Interact implements Listener {
 			}
 
 			Player target = (Player) e.getRightClicked();
-			if (p.getItemInHand().getType() == Material.BLAZE_ROD && p.getItemInHand().hasItemMeta()) {
+			if (p.getItemInHand().getType() == plugin.getApi().getMaterial(AMaterials.BLAZE_ROD)
+					&& p.getItemInHand().hasItemMeta()) {
 				if (!Utils.existePeticion(p, target)) {
 					Utils.enviaPeticion(p, target, this.plugin);
 				} else if (this.plugin.getLanguage().equalsIgnoreCase("es")) {
@@ -79,7 +81,7 @@ public class Interact implements Listener {
 			Jugador j = Utils.buscaJugador(p, this.plugin);
 			if (j.isPlaying()) {
 				if (evt.getItem() != null && evt.getItem().getType() != null) {
-					if (evt.getItem().getType() == Material.STICK) {
+					if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.STICK)) {
 						if (j.getPartida() != null) {
 							if (j.isTurn()) {
 								CardGUI.openMobsGUI(j);
@@ -90,7 +92,7 @@ public class Interact implements Listener {
 							}
 
 						}
-					} else if (evt.getItem().getType() == Material.BLAZE_ROD) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.BLAZE_ROD)) {
 						Utils.buscaPartida2(p, this.plugin);
 					}
 
@@ -101,7 +103,7 @@ public class Interact implements Listener {
 			Jugador j = Utils.buscaJugador(p, this.plugin);
 			if (j.isPlaying()) {
 				if (evt.getItem() != null && evt.getItem().getType() != null) {
-					if (evt.getItem().getType() == Material.STICK) {
+					if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.STICK)) {
 						if (j.getPartida() != null) {
 							if (j.isTurn()) {
 								CardGUI.openMobsGUI(j);
@@ -112,13 +114,13 @@ public class Interact implements Listener {
 							}
 
 						}
-					} else if (evt.getItem().getType() == Material.BLAZE_ROD) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.BLAZE_ROD)) {
 						Utils.buscaPartida2(p, this.plugin);
 					}
 				}
 
 				if (j.isTurn() && evt.getClickedBlock() != null
-						&& evt.getClickedBlock().getType() == Material.IRON_BLOCK) {
+						&& evt.getClickedBlock().getType() == plugin.getApi().getMaterial(AMaterials.IRON_BLOCK)) {
 					Utils.pasaTurno(j, this.plugin);
 
 				}
@@ -129,7 +131,7 @@ public class Interact implements Listener {
 			Jugador j = Utils.buscaJugador(p, this.plugin);
 			if (j.isPlaying() && evt.getItem() != null) {
 				if (evt.getItem().getType() != null) {
-					if (evt.getItem().getType() == Material.PAPER) {
+					if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.PAPER)) {
 						if (evt.getItem().hasItemMeta()) {
 							if (j.isTurn()) {
 								Jugador enemy = j.getPartida().devuelveOtroJugador(j);
@@ -146,7 +148,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeArcaneIntellectEffect(j, enemy);
+										Skills.makeArcaneIntellectEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -155,7 +157,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeBurnEffect(j, enemy);
+										Skills.makeBurnEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -164,7 +166,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeLifeChangeEffect(j, enemy);
+										Skills.makeLifeChangeEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -173,7 +175,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeManaSupplyEffect(j, enemy);
+										Skills.makeManaSupplyEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -182,7 +184,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeNewLifeEffect(j, enemy);
+										Skills.makeNewLifeEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -192,7 +194,7 @@ public class Interact implements Listener {
 											j.setMana(j.getMana() - c.getCardCost().intValue());
 											j.setUsedSkill(true);
 											enviaMensajes(nombreCarta, c, p, enemy);
-											Skills.makeHunterSkillEffect(j, enemy);
+											Skills.makeHunterSkillEffect(plugin, j, enemy);
 										} else if (this.plugin.getLanguage().equalsIgnoreCase("es")) {
 											p.sendMessage(ChatColor.RED + "Ya usaste tu habilidad de clase");
 										} else {
@@ -207,7 +209,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeDivineBowEffect(j, enemy);
+										Skills.makeDivineBowEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -226,7 +228,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeInstantPoisonEffect(j, enemy);
+										Skills.makeInstantPoisonEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -236,7 +238,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeLegendaryBowEffect(j, enemy);
+										Skills.makeLegendaryBowEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -245,7 +247,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makePoisonGasEffect(j, enemy);
+										Skills.makePoisonGasEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -254,7 +256,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeDisarmEffect(j, enemy);
+										Skills.makeDisarmEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -264,7 +266,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeSnatchAwayEffect(j, enemy);
+										Skills.makeSnatchAwayEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -273,7 +275,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeIronBallEffect(j, enemy);
+										Skills.makeIronBallEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -282,7 +284,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeEqualityEffect(j, enemy);
+										Skills.makeEqualityEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -291,7 +293,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeFlameEffect(j, enemy);
+										Skills.makeFlameEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -301,7 +303,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeGreatWeaponEffect(j, enemy);
+										Skills.makeGreatWeaponEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -310,7 +312,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeManaSetEffect(j, enemy);
+										Skills.makeManaSetEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -320,7 +322,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeShieldBearerEffect(j, enemy);
+										Skills.makeShieldBearerEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -339,7 +341,7 @@ public class Interact implements Listener {
 										p.updateInventory();
 										j.setMana(j.getMana() - c.getCardCost().intValue());
 										enviaMensajes(nombreCarta, c, p, enemy);
-										Skills.makeWoodWeaponEffect(j, enemy);
+										Skills.makeWoodWeaponEffect(plugin, j, enemy);
 										Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 										return;
 									}
@@ -493,7 +495,7 @@ public class Interact implements Listener {
 											p.updateInventory();
 											j.setMana(j.getMana() - c.getCardCost().intValue());
 											enviaMensajes(nombreCarta, c, p, enemy);
-											Skills.makeDrawEffect(j, enemy, cc);
+											Skills.makeDrawEffect(plugin, j, enemy, cc);
 											Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 											break;
 
@@ -503,7 +505,7 @@ public class Interact implements Listener {
 												p.updateInventory();
 												j.setMana(j.getMana() - c.getCardCost().intValue());
 												enviaMensajes(nombreCarta, c, p, enemy);
-												Skills.makeSpawnEffect(j, enemy, cc);
+												Skills.makeSpawnEffect(plugin, j, enemy, cc);
 												Utils.updateScoreboard(j.getP(), j, j.getP().getName(), this.plugin);
 												break;
 											}
@@ -538,20 +540,22 @@ public class Interact implements Listener {
 							}
 
 						}
-					} else if (evt.getItem().getType() == Material.EMERALD) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.EMERALD)) {
 						if (evt.getItem().hasItemMeta())
 							CardGUI.openGUI(evt.getPlayer());
-					} else if (evt.getItem().getType() == Material.DIAMOND) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.DIAMOND)) {
 						if (evt.getItem().hasItemMeta())
 							CardGUI.openChallengGUI(evt.getPlayer());
-					} else if (evt.getItem().getType() == Material.BLAZE_POWDER) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.BLAZE_POWDER)) {
 						if (evt.getItem().hasItemMeta())
 							this.plugin.getTop10(p);
-					} else if (evt.getItem().getType() == Material.STICK && evt.getItem().hasItemMeta()
-							&& j.getPartida() != null) {
+					} else if (evt.getItem().getType() == plugin.getApi().getMaterial(AMaterials.STICK)
+							&& evt.getItem().hasItemMeta() && j.getPartida() != null) {
 						Jugador j2 = j.getPartida().devuelveOtroJugador(j);
 						Utils.daVidaEnemigo(j.getP(), j2.getP(), this.plugin);
 					}
+					System.out.println(evt.getItem().getType());
+					System.out.println(plugin.getApi().getMaterial(AMaterials.EMERALD));
 				}
 			}
 		}

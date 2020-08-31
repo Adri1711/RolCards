@@ -1010,6 +1010,7 @@ public class RolCards extends JavaPlugin {
 		}
 		varaMeta.setLore((List) lista);
 		vara.setItemMeta(varaMeta);
+
 		this.desafiador = vara;
 		this.mySQL = this.getConfig().getBoolean("enableMySQL");
 		this.host = this.getConfig().getString("mysql.host");

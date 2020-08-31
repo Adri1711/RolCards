@@ -246,7 +246,7 @@ public class CardGUI implements Listener {
 				player.closeInventory();
 				return;
 			}
-			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL)) {
+			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM)) {
 
 				aux = null;
 				pet = null;
@@ -432,7 +432,7 @@ public class CardGUI implements Listener {
 				player.closeInventory();
 				return;
 			}
-			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL)) {
+			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM)) {
 
 				Utils.doSkillToPlayer(j, j.getPartida().devuelveOtroJugador(j),
 						Utils.buscaCarta(event.getInventory().getItem(7).getItemMeta().getDisplayName(), this.plugin),
@@ -468,7 +468,7 @@ public class CardGUI implements Listener {
 				player.closeInventory();
 				return;
 			}
-			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL)) {
+			if (event.getCurrentItem().getType() == pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM)) {
 
 				EntitySkill.entityAttackPlayer(j, j.getPartida().devuelveOtroJugador(j),
 						Utils.buscaMonstruo(j, event.getInventory().getItem(7).getItemMeta().getLore().get(0)),
@@ -1120,7 +1120,7 @@ public class CardGUI implements Listener {
 				listaPeticiones.add(c.getFrom());
 			}
 		}
-		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL));
+		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM));
 		comp.setDurability((short) 3);
 		SkullMeta compMeta = (SkullMeta) comp.getItemMeta();
 		int i = 0;
@@ -1138,7 +1138,7 @@ public class CardGUI implements Listener {
 
 	public static void openTargetGUI(Jugador j, Jugador enemy, Card c) {
 		Inventory inv = Bukkit.createInventory(null, 9, ChatColor.DARK_GREEN + "Target");
-		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL));
+		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM));
 		ItemStack ent = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.GOLDEN_CARROT));
 		ItemMeta entMeta = ent.getItemMeta();
 		comp.setDurability((short) 3);
@@ -1177,7 +1177,7 @@ public class CardGUI implements Listener {
 
 	public static void openFriendlyTargetGUI(Jugador j, Jugador enemy, Card c) {
 		Inventory inv = Bukkit.createInventory(null, 9, ChatColor.DARK_GREEN + "Target");
-		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL));
+		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM));
 		ItemStack ent = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.GOLDEN_CARROT));
 		ItemMeta entMeta = ent.getItemMeta();
 		comp.setDurability((short) 3);
@@ -1215,7 +1215,7 @@ public class CardGUI implements Listener {
 
 	private static void openEnemyMobsGUI(Jugador j, Jugador enemy, ItemStack currentItem) {
 		Inventory inv = Bukkit.createInventory(null, 9, ChatColor.DARK_GREEN + "Mobs Menu");
-		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL));
+		ItemStack comp = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.SKULL_ITEM));
 		ItemStack ent = new ItemStack(pluginStatic.getApi().getMaterial(AMaterials.CARROT));
 		ItemMeta entMeta = ent.getItemMeta();
 		comp.setDurability((short) 3);

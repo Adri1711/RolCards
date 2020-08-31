@@ -554,8 +554,6 @@ public class Interact implements Listener {
 						Jugador j2 = j.getPartida().devuelveOtroJugador(j);
 						Utils.daVidaEnemigo(j.getP(), j2.getP(), this.plugin);
 					}
-					System.out.println(evt.getItem().getType());
-					System.out.println(plugin.getApi().getMaterial(AMaterials.EMERALD));
 				}
 			}
 		}

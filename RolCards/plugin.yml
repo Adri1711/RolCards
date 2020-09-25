@@ -1,6 +1,6 @@
 name: RolCards
 main: com.adri1711.rolcards.RolCards
-version: 1.2
+version: 1.2.1
 softdepend: [MVdWPlaceholderAPI]
 loadbefore: [FeatherBoard]
 depend: [Vault,Lib1711]

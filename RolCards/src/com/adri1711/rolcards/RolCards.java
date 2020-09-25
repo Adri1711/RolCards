@@ -135,6 +135,8 @@ public class RolCards extends JavaPlugin {
 		setupEconomy();
 		setupPermissions();
 		inicializaVariables();
+		int pluginId = 8946;
+		Metrics metrics = new Metrics(this, pluginId);
 	}
 
 	public void onDisable() {
